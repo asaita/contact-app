@@ -10,4 +10,11 @@ class Company extends Model
     use HasFactory;
     //protected $guarded =[];
     protected $fillable = ['name','adres','email'];
+    
+    public function contact()
+    {
+
+    return $this->hasMany(Contact::class);
+
+    }
 }

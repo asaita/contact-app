@@ -11,6 +11,7 @@ class Contact extends Model
 
     public function Company(){
 
-        $this->belongsTo(Company::class);
+        //her contact bir şirkete ait olduğu için bu şekilde ilişki(relationship) kuruldu.(1 to 1)
+        return $this->belongsTo(Company::class);
     }
 }

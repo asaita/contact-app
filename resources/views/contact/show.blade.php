@@ -2,4 +2,4 @@
 
 <div> {{ $contact }}</div>
 
-<a href="{{route('contact.index')}}"> Tüm kayıtlara gönder</a>
+<a href="{{route('contact.index')}}"> Back To All Contacts</a>

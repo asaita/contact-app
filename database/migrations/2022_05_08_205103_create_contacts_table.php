@@ -20,9 +20,10 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('phone')->nullable();
             $table->string('email');
-            $table->string('adres');
+            $table->string('address');
 
-            //Companies tablosu ile bağlantı kurduk
+            //Companies tablosu ile bağlantı kurduk. 
+            // silme işleminde iki tablo birlikte siliniyor
             $table->foreignId('company_id')->constrained()->onDelete('cascade');
             
         });

@@ -4,8 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
 use Illuminate\Support\Facades\DB;
-use Faker\factory as Faker;
+use Faker\Factory as Faker;
 
 
 class CompaniesTableSeeder extends Seeder
@@ -17,19 +18,21 @@ class CompaniesTableSeeder extends Seeder
      */
     public function run()
     {
-        //önce veritabanımızda veri varsa hepsini siliyoruz
+
+        $faker = Faker::create();
+
+        //truncate yerine delete kullansaydık veritabanındaki idler 1 den başlamazdı
         DB::table('companies')->delete();
 
         $companies=[];
-        $faker = Faker::create();
-
 
         foreach (range(1,10) as $index) {
-            $companies[]= [
-                'name'=> $faker->company(),
-                'adres'=> $faker->address(),
-                'website'=>$faker->domainname(),
-                'email'=>$faker->email(),
+            $companies[]=[
+                'name'    => $faker->company(),
+                'address'  => $faker->address(),
+                'website' => $faker->domainname (),
+                'email'   => $faker->email(),
+                
                 'created_at'=>now(),
                 'updated_at'=>now(),
             ];

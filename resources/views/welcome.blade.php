@@ -22,7 +22,7 @@
     </head>
     <body class="antialiased">
         
-    <div class="links">
+    <div class="ml-12">
             <a href="{{route('contact.index')}}">All contacts</a>
             <a href="{{route('contact.create')}}">Add contacts</a>
             <a href="{{route('contact.show',1)}}">Show contacts</a>

@@ -18,10 +18,11 @@ class DatabaseSeeder extends Seeder
                
         // $this->call(UsersTableSeeder::class);
         //bulunduğumuz databasesseder sayfasını seeding için çağırdığımızda aşağıdaki
-        //iki seeder sayfası çağrılacakp
+        //iki seeder sayfası çağrılacak
         $this->call([
+            CompaniesTableSeeder::class,
             ContactsTableSeeder::class,
-            CompaniesTableSeeder::class
+            
         ]);
     }
 }

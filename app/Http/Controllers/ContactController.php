@@ -1,21 +1,26 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
 use App\Models\Contact;
+use App\Models\Company;
 
 class ContactController extends Controller
 {
     public function index(){
-       // $contacts = Contact::all();
-       //aşağıdaki satır üstdeki satırdan farklı olarak isim sütununu a den z ye doğru sıralıyor
+
+        //pluck metodu veritabanından dizi şeklinde veri çekmeye yarıyor. 
+        //orderby ise çekilen veriyi isime göre sıralıyor
+        $companies=Company::orderby('name')->pluck('name','id')->all();
+
+        // $contacts = Contact::all();
+        //aşağıdaki satır üstdeki satırdan farklı olarak isim sütununu a den z ye doğru sıralıyor
         //$contacts=Contact::orderBy('first_name','asc')->get();
 
         //Aşağıdan SAYFALAMA yapmamızı sağlıyor
         $contacts=Contact::orderBy('first_name','asc')->paginate(5);
-        return view('contact.index',Compact('contacts'));
+
+        return view('contact.index',Compact('contacts','companies'));
     }
 
     public function create(){
@@ -24,6 +29,6 @@ class ContactController extends Controller
 
     public function show($id){
         $contact=Contact::find($id);
-        return view('contact.show', compact('contact'));
+        return view('contact.show', compact('contact','companies'));
     }
 }

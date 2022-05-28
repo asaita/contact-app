@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        //31.de pagination linklerin stilini değiştirmek için gereken yer
+        \illuminate\Pagination\Paginator::useBootstrap();
     }
 }

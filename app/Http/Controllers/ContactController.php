@@ -11,14 +11,19 @@ class ContactController extends Controller
 
         //pluck metodu veritabanından dizi şeklinde veri çekmeye yarıyor. 
         //orderby ise çekilen veriyi isime göre sıralıyor
-        $companies=Company::orderby('name')->pluck('name','id')->all();
+        $companies=Company::orderby('name')->pluck('name','id')->prepend('All Companies','');
 
         // $contacts = Contact::all();
         //aşağıdaki satır üstdeki satırdan farklı olarak isim sütununu a den z ye doğru sıralıyor
         //$contacts=Contact::orderBy('first_name','asc')->get();
 
-        //Aşağıdan SAYFALAMA yapmamızı sağlıyor
-        $contacts=Contact::orderBy('first_name','asc')->paginate(5);
+        //Aşağıdan SAYFALAMA yapmamızı sağlıyor. javascript ile gelen company idye göre
+        //veri çekiyoruz company tablosundan
+        $contacts=Contact::orderBy('first_name','asc')->where(function($query){
+            if ($companyId=request('company_id')){
+                $query->where('company_id',$companyId);
+            }
+        })->paginate(5);
 
         return view('contact.index',Compact('contacts','companies'));
     }
@@ -28,7 +33,7 @@ class ContactController extends Controller
     }
 
     public function show($id){
-        $contact=Contact::find($id);
-        return view('contact.show', compact('contact','companies'));
+        $contacts=Contact::find($id);
+       return view('contact.show',Compact('contacts'));
     }
 }

@@ -36,13 +36,16 @@
                       @foreach ($contacts as $index=>$contact)
 
                       <tr>
-                        <th scope="row">{{$index+$contacts->firstItem()}}</th>
+                        <th scope="row">{{$index+$contacts->firstItem() }}</th>
+                        <!-- mesela 100 kayıt olsaydı 10 lu sayfalamadan 
+                          ilk sayfada 1 2.sayfada 11 3.sayfada 22 olacaktı firsitem değeri -->
+                        <td>{{$contacts->firstItem()}}</td>
                         <td>{{$contact->first_name}}</td>
                         <td>{{$contact->last_name}}</td>
                         <td>{{$contact->email}}</td>
                         <td>{{$contact->Company->name}}</td>
                         <td width="150">
-                          <a href="show.html" class="btn btn-sm btn-circle btn-outline-info" title="Show"><i class="fa fa-eye"></i></a>
+                          <a href="{{route('contact.show', $contact->id)}}" class="btn btn-sm btn-circle btn-outline-info" title="Show"><i class="fa fa-eye"></i></a>
                           <a href="form.html" class="btn btn-sm btn-circle btn-outline-secondary" title="Edit"><i class="fa fa-edit"></i></a>
                           <a href="#" class="btn btn-sm btn-circle btn-outline-danger" title="Delete" onclick="confirm('Are you sure?')"><i class="fa fa-times"></i></a>
                         </td>
@@ -53,7 +56,8 @@
                   </tr>
                 </tbody>
               </table> 
-              {{$contacts->links()}}
+              {{-- pagination linkleri 1,2,3,4 --}}
+              {{$contacts->appends(request()->only('company_id'))->links()}}
              
             </div>
           </div>

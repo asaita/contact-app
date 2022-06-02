@@ -9,6 +9,8 @@ class Contact extends Model
 {
     use HasFactory;
 
+    protected $fillable =['first_name','last_name','email','phone','address','company_id'];
+
     public function Company(){
 
         //her contact bir şirkete ait olduğu için bu şekilde ilişki(relationship) kuruldu.(1 to 1)

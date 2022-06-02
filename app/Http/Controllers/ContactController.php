@@ -35,9 +35,26 @@ class ContactController extends Controller
     }
 
     public function store(Request $request){
+
+        //validate laravel fonksiyonu hangi alanda hangi doğrulamarı yapmamız gerektiğini belirtiyoruz
+        $request->validate([
+            'first_name'=>'required',
+            'last_name'=>'required',
+            'phone'=>'required',
+            'email'=>'required|email',
+            'address'=>'required',
+            'company_id'=>'required|exists:companies,id'
+        ]);
+        
         // dd($request->all());
         //dd($request->only('first_name','last_name'));
-        dd($request->except('first_name','last_name'));
+        //ekranda diziyi düzgün bir şekilde görmemizi sağlıyo
+        //dd($request->except('first_name','last_name'));
+
+        //formdaki verileri veritabanına ekledi bu verileri form idye göre alıyor
+        Contact::create($request->all());
+
+        return redirect()->route('contact.index')->with('message',"Contact hasbeen added succesfully");
         
     }
 

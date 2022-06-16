@@ -30,8 +30,16 @@ class ContactController extends Controller
 
     public function create(){
 
+        $contact = new Contact();
         $companies=Company::orderby('name')->pluck('name','id')->prepend('All Companies','');
-        return view('contact.create',compact('companies'));
+        return view('contact.create',compact('companies','contact'));
+    }
+
+    public function edit($id)
+    {
+        $contact=Contact::findOrFail($id); 
+        $companies=Company::orderby('name')->pluck('name','id')->prepend('All Companies','');
+        return view('contact.edit',compact('companies','contact'));
     }
 
     public function store(Request $request){
@@ -58,8 +66,28 @@ class ContactController extends Controller
         
     }
 
+    public function update($id, Request $request){
+
+        
+        $request->validate([
+            'first_name'=>'required',
+            'last_name'=>'required',
+            'phone'=>'required',
+            'email'=>'required|email',
+            'address'=>'required',
+            'company_id'=>'required|exists:companies,id'
+        ]);
+        
+        
+        $contact=Contact::findOrFail($id);
+        $contact->update($request->all());
+
+        return redirect()->route('contact.index')->with('message',"Contact hasbeen updated succesfully");
+        
+    }
+
     public function show($id){
-        $contacts=Contact::find($id);
+        $contacts=Contact::findOrFail($id);
        return view('contact.show',Compact('contacts'));
     }
 }

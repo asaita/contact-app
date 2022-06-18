@@ -83,11 +83,19 @@ class ContactController extends Controller
         $contact->update($request->all());
 
         return redirect()->route('contact.index')->with('message',"Contact hasbeen updated succesfully");
-        
     }
 
     public function show($id){
         $contacts=Contact::findOrFail($id);
        return view('contact.show',Compact('contacts'));
+    }
+
+    public function destroy($id){
+        $contact=Contact::findOrFail($id);
+        $contact->delete();
+
+        return back()->with('message',"Contact hasbeen deleted succesfully");
+        
+
     }
 }

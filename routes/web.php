@@ -28,4 +28,6 @@ Route::get('/contacts/{id}/edit',[ContactController::class,'edit'])->name('conta
 
 Route::put('/contacts/{id}', [ContactController::class,'update'])->name('contact.update');
 
+Route::delete('/contacts/{id}', [ContactController::class,'destroy'])->name('contact.destroy');
+
 Route::get('/contacts/{id}', [ContactController::class,'show'])->name('contact.show');

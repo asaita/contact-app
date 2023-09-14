@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
+use App\Models\Contact;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,12 @@ use App\Http\Controllers\ContactController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('account', [AccountController::class,'index'])->name('account');
+Route::post('update-account', [AccountController::class,'update'])->name('update-account');
+
+//Route::resource('/contacts', ContactController::class); bu şekilde yapınca aşağıdaki 
+//7 taneyi derlemiş toplamış oluyoruz ama bende çakışmadı çok uğraşmadım
 
 Route::get('/contacts',[ContactController::class,'index'])->name('contact.index');
 

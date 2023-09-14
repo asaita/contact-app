@@ -28,7 +28,8 @@ class ContactFactory extends Factory
             'address'=> $this->faker->address(),
             
             //Aşağıdaki pluck komutu Company sayfasından rastgele idleri alıyor
-            'company_id'=> Company::pluck('id')->random()
+            //'company_id'=> Company::pluck('id')->random()
+            //ilişki kurduğumuz için rastgele id atmamıza gerek kalmadı çünkü id sini ilişkiden alacak
         ];
     }
 }

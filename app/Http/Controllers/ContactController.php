@@ -27,10 +27,12 @@ class ContactController extends Controller
             //eğer bu istek gönderilmişse $search değişkenine bu değeri atıyor ve boş değilse
             //bir query çalıştırıyor
             if($search=request('search')){
-                $query->where('first_name','LIKE',"%{$search}%"); 
+                $query->where('first_name','LIKE',"%{$search}%");
+                $query->orwhere('last_name','LIKE',"%{$search}%"); 
+                $query->orwhere('email','LIKE',"%{$search}%");  
 
             }
-        })->paginate(5);
+        })->paginate(10);
 
         return view('contact.index',Compact('contacts','companies'));
     }
@@ -94,6 +96,7 @@ class ContactController extends Controller
 
     public function show($id){
         $contacts=Contact::findOrFail($id);
+       
        return view('contact.show',Compact('contacts'));
     }
 
@@ -101,7 +104,7 @@ class ContactController extends Controller
         $contact=Contact::findOrFail($id);
         $contact->delete();
 
-        return back()->with('message',"Contact hasbeen deleted succesfully");
+        return redirect()->route('contact.index')->with('message',"Contact hasbeen deleted succesfully");
         
 
     }

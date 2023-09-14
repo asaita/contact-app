@@ -43,7 +43,7 @@
                   <div class="form-group row">
                     <label for="name" class="col-md-3 col-form-label">Address</label>
                     <div class="col-md-9">
-                      <p class="form-control-plaintext text-muted">{{$contacts->Address}}</p>
+                      <p class="form-control-plaintext text-muted">{{$contacts->address}}</p>
                     </div>
                   </div>
                   <div class="form-group row">
@@ -55,8 +55,14 @@
                   <hr>
                   <div class="form-group row mb-0">
                     <div class="col-md-9 offset-md-3">
-                        <a href="#" class="btn btn-info">Edit</a>
-                        <a href="#" class="btn btn-outline-danger">Delete</a>
+                        <a href="{{route('contact.edit',$contacts->id)}}" class="btn btn-info">Edit</a>
+                        <form action="{{route('contact.destroy',$contacts->id)}}" method="post" onsubmit="return confirm('Emin misiniz')" style="display: inline">
+                          @csrf
+                          @method('delete')
+                          <button type="submit" class="btn btn-outline-danger" title="Delete">Delete</button>
+                        
+                        </form>
+                       
                         <a href="{{route('contact.index')}}" class="btn btn-outline-secondary">Cancel</a>
                     </div>
                   </div>

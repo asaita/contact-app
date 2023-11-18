@@ -26,12 +26,16 @@ class ContactController extends Controller
             //search simgesine basılıp arama texti girildiğinde bir istek gönderrildiğinde
             //eğer bu istek gönderilmişse $search değişkenine bu değeri atıyor ve boş değilse
             //bir query çalıştırıyor
+            
+        })->where(function ($query){
+
             if($search=request('search')){
                 $query->where('first_name','LIKE',"%{$search}%");
                 $query->orwhere('last_name','LIKE',"%{$search}%"); 
                 $query->orwhere('email','LIKE',"%{$search}%");  
 
             }
+
         })->paginate(10);
 
         return view('contact.index',Compact('contacts','companies'));
@@ -101,11 +105,36 @@ class ContactController extends Controller
     }
 
     public function destroy($id){
+       
         $contact=Contact::findOrFail($id);
         $contact->delete();
 
-        return redirect()->route('contact.index')->with('message',"Contact hasbeen deleted succesfully");
+        return redirect()->route('contact.index')
+        ->with('message',"Contact has been moved to trash")
+        ->with('undoRoute',route('contacts.restore',$contact->id));
         
+
+    }
+
+    public function restore($id){
+       
+        $contact=Contact::onlyTrashed()->findOrFail($id);
+        $contact->restore();
+
+        return back()
+        ->with('message','Contact has been restored from trash')
+        ->with('undoRoute',route('contacts.restore',$contact->id));
+        
+
+    }
+
+    public function forceDelete($id){
+       
+        $contact=Contact::onlyTrashed()->findOrFail($id);
+        $contact->forceDelete();
+
+        return back()
+        ->with('message',"Contact has been removed permanently");
 
     }
 }

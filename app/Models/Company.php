@@ -14,7 +14,7 @@ class Company extends Model
     public function contact()
     {
 
-        //bir şirkette birden fazla contact olduğu için bu şekilde bağlantı kuruldu (1 to n)
+        //bir company birden fazla contact olduğu için bu şekilde bağlantı kuruldu (1 to n)
     return $this->hasMany(Contact::class);
 
     }

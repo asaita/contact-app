@@ -32,7 +32,18 @@
                 <tbody>
 
                   @if ($message = session('message'))
-                    <div class="alert alert-success">{{$message}}</div>
+                    <div class="alert alert-success">{{$message}}
+                    
+                      @if ($undoRoute=session('undoRoute'))
+
+                        <form action="{{$undoRoute}}" method="POST" style="display: inline">
+                          @csrf
+                          @method('delete')
+                          <button class="btn alert-link">Undo</button>
+                        </form>
+
+                      @endif
+                    </div>
                   @endif
                   
                     @if ($contacts->count())
@@ -51,14 +62,16 @@
                         <td width="150">
                           <a href="{{route('contact.show', $contact->id)}}" class="btn btn-sm btn-circle btn-outline-info" title="Show"><i class="fa fa-eye"></i></a>
                           <a href="{{route('contact.edit',$contact->id)}}" class="btn btn-sm btn-circle btn-outline-secondary" title="Edit"><i class="fa fa-edit"></i></a>
-                          <a href="{{route('contact.destroy',$contact->id)}}" class="btn-delete btn btn-sm btn-circle btn-outline-danger" title="Delete"><i class="fa fa-times"></i></a>
+                          <form id="form-delete" action="{{route('contact.destroy',$contact->id)}}" method="POST" style="display: inline">  
+                            @csrf
+                            @method('delete')
+                            
+                            <button class="btn btn-sm btn-circle btn-outline-danger" type="submit" title="Delete"><i class="fa fa-trash"></i></button>
+                          </form>
                         </td>
                       </tr>
                       @endforeach
-                      <form id="form-delete" method="POST" style="display: none">  
-                        @csrf
-                        @method('DELETE')
-                      </form>
+                      
                     @endif
                     
                   </tr>

@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use App\Models\Contact;
 use App\Models\Company;
+use App\Models\Contact;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ContactController extends Controller
 {
@@ -13,13 +14,19 @@ class ContactController extends Controller
         //orderby ise çekilen veriyi isime göre sıralıyor
         $companies=Company::orderby('name')->pluck('name','id')->prepend('All Companies','');
 
-        // $contacts = Contact::all();
-        //aşağıdaki satır üstdeki satırdan farklı olarak isim sütununu a den z ye doğru sıralıyor
-        //$contacts=Contact::orderBy('first_name','asc')->get();
+        //DB::enableQueryLog();
+        
+        $query=Contact::query();
+
+        if(request()->query('trash')){
+            $query->onlyTrashed();
+        }
+        
 
         //Aşağıdan SAYFALAMA yapmamızı sağlıyor. javascript ile gelen company idye göre
         //veri çekiyoruz company tablosundan
-        $contacts=Contact::orderBy('first_name','asc')->where(function($query){
+        //$contacts=Contact::orderBy('first_name','asc')->where(function($query){ ders 108 den dolayı burayı değiştirmek zorunda kaldık
+            $contacts=$query->orderBy('first_name','asc')->where(function($query){    
             if ($companyId=request('company_id')){
                 $query->where('company_id',$companyId);
             }
@@ -37,6 +44,8 @@ class ContactController extends Controller
             }
 
         })->paginate(10);
+
+        //dump(DB::getQueryLog());
 
         return view('contact.index',Compact('contacts','companies'));
     }
@@ -111,7 +120,7 @@ class ContactController extends Controller
 
         return redirect()->route('contact.index')
         ->with('message',"Contact has been moved to trash")
-        ->with('undoRoute',route('contacts.restore',$contact->id));
+        ->with('undoRoute',$this->getUndoRoute('contacts.restore',$contact));
         
 
     }
@@ -120,11 +129,18 @@ class ContactController extends Controller
        
         $contact=Contact::onlyTrashed()->findOrFail($id);
         $contact->restore();
+        $redirect=request()->query('redirect');
 
-        return back()
+        return ($redirect ? redirect()->route($redirect):back())
         ->with('message','Contact has been restored from trash')
-        ->with('undoRoute',route('contacts.restore',$contact->id));
+        ->with('undoRoute',$this->getUndoRoute('contacts.destroy',$contact));
         
+
+    }
+
+    protected function getUndoRoute($name, $resource){
+
+            return request()->missing('undo')?route($name,[$resource->id,'undo'=>true]):null;
 
     }
 

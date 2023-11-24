@@ -10,7 +10,12 @@
           <div class="card">
               <div class="card-header card-title">
                 <div class="d-flex align-items-center">
-                  <h2 class="mb-0">All Contacts</h2>
+                  <h2 class="mb-0">
+                    All Contacts
+                    @if (request()->query('trash'))
+                        <small>(In Trash)</small>
+                    @endif
+                  </h2>
                   <div class="ml-auto">
                     <a href="{{route('contact.create')}}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add New</a>
                   </div>
@@ -30,6 +35,10 @@
                   </tr>
                 </thead>
                 <tbody>
+
+                  @php
+                   $showTrashButtons= request()->query('trash') ? true :false;
+                  @endphp
 
                   @if ($message = session('message'))
                     <div class="alert alert-success">{{$message}}
@@ -60,14 +69,33 @@
                         <td>{{$contact->email}}</td>
                         <td>{{$contact->Company->name}}</td>
                         <td width="150">
-                          <a href="{{route('contact.show', $contact->id)}}" class="btn btn-sm btn-circle btn-outline-info" title="Show"><i class="fa fa-eye"></i></a>
-                          <a href="{{route('contact.edit',$contact->id)}}" class="btn btn-sm btn-circle btn-outline-secondary" title="Edit"><i class="fa fa-edit"></i></a>
-                          <form id="form-delete" action="{{route('contact.destroy',$contact->id)}}" method="POST" style="display: inline">  
-                            @csrf
-                            @method('delete')
-                            
-                            <button class="btn btn-sm btn-circle btn-outline-danger" type="submit" title="Delete"><i class="fa fa-trash"></i></button>
-                          </form>
+
+                          @if ($showTrashButtons)
+
+                            <form id="form-delete" action="{{route('contacts.restore',$contact->id)}}" method="POST" style="display: inline">  
+                              @csrf
+                              @method('delete')
+                              
+                              <button class="btn btn-sm btn-circle btn-outline-info" type="submit" title="Restore"><i class="fa fa-undo"></i></button>
+                            </form>
+                            <form id="form-delete" action="{{route('contacts.forceDelete',$contact->id)}}" onsubmit="return confirm('Your data will be removed permanently. Are you sure?') " method="POST" style="display: inline">  
+                              @csrf
+                              @method('delete')
+                              
+                              <button class="btn btn-sm btn-circle btn-outline-danger" type="submit" title="Delete permanently"><i class="fa fa-times"></i></button>
+                            </form>
+                              
+                          @else
+                              
+                            <a href="{{route('contact.show', $contact->id)}}" class="btn btn-sm btn-circle btn-outline-info" title="Show"><i class="fa fa-eye"></i></a>
+                            <a href="{{route('contact.edit',$contact->id)}}" class="btn btn-sm btn-circle btn-outline-secondary" title="Edit"><i class="fa fa-edit"></i></a>
+                            <form id="form-delete" action="{{route('contacts.destroy',$contact->id)}}" method="POST" style="display: inline">  
+                              @csrf
+                              @method('delete')
+                              
+                              <button class="btn btn-sm btn-circle btn-outline-danger" type="submit" title="Delete"><i class="fa fa-trash"></i></button>
+                            </form>
+                          @endif
                         </td>
                       </tr>
                       @endforeach

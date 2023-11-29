@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\SimpleSoftDeletingScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contact extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;// global scope için bunu sildik SoftDeletes;
 
     protected $fillable =['first_name','last_name','email','phone','address','company_id'];
 
@@ -22,5 +23,10 @@ class Contact extends Model
       
         //her contactın birden fazla taskı olabilir
         return $this->hasMany(Task::class);
+    }
+
+    protected static function booted() {
+       
+        static::addGlobalScope(new SimpleSoftDeletingScope);
     }
 }

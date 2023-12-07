@@ -2,14 +2,18 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\SimpleSoftDeletingScope;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
+
+use Illuminate\Database\Eloquent\Builder;
+
 use Illuminate\Database\Eloquent\SoftDeletes;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Contact extends Model
 {
-    use HasFactory;// global scope için bunu sildik SoftDeletes;
+    use HasFactory,SoftDeletes;// global scope için bunu sildik SoftDeletes;
 
     protected $fillable =['first_name','last_name','email','phone','address','company_id'];
 
@@ -25,8 +29,19 @@ class Contact extends Model
         return $this->hasMany(Task::class);
     }
 
-    protected static function booted() {
-       
-        static::addGlobalScope(new SimpleSoftDeletingScope);
+    public function scopeSortByNameAlpha(Builder $query)
+    {
+        return $query->orderBy('first_name');
     }
+
+    public function scopeFilterByCompany(Builder $query){
+        if ($companyId=request('company_id')){
+            $query->where('company_id',$companyId);
+        }
+
+        return $query;
+    }
+
+    
+  
 }

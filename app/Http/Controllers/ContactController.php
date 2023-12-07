@@ -26,15 +26,7 @@ class ContactController extends Controller
         //Aşağıdan SAYFALAMA yapmamızı sağlıyor. javascript ile gelen company idye göre
         //veri çekiyoruz company tablosundan
         //$contacts=Contact::orderBy('first_name','asc')->where(function($query){ ders 108 den dolayı burayı değiştirmek zorunda kaldık
-            $contacts=$query->orderBy('first_name','asc')->where(function($query){    
-            if ($companyId=request('company_id')){
-                $query->where('company_id',$companyId);
-            }
-            //search simgesine basılıp arama texti girildiğinde bir istek gönderrildiğinde
-            //eğer bu istek gönderilmişse $search değişkenine bu değeri atıyor ve boş değilse
-            //bir query çalıştırıyor
-            
-        })->where(function ($query){
+            $contacts=$query->sortByNameAlpha()->filterByCompany()->where(function ($query){
 
             if($search=request('search')){
                 $query->where('first_name','LIKE',"%{$search}%");

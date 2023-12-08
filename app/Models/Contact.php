@@ -29,18 +29,39 @@ class Contact extends Model
         return $this->hasMany(Task::class);
     }
 
-    public function scopeSortByNameAlpha(Builder $query)
+    public function scopeAllowedSorts(Builder $query, string $column)
     {
-        return $query->orderBy('first_name');
+        return $query->orderBy($column);
     }
 
-    public function scopeFilterByCompany(Builder $query){
-        if ($companyId=request('company_id')){
-            $query->where('company_id',$companyId);
+    public function scopeAllowedFilters(Builder $query, string $key){
+        if ($companyId=request($key)){
+            $query->where($key,$companyId);
         }
 
         return $query;
     }
+
+    public function scopeAllowedSearch(Builder $query, array $keys){
+
+        
+        
+        if($search=request('search')){
+
+            foreach ($keys as $index => $key) {
+                $method=$index===0?'where':'orWhere';
+                $query->$method($key,'LIKE',"%{$search}%");
+            }
+
+            // $query->where('first_name','LIKE',"%{$search}%");
+            // $query->orwhere('last_name','LIKE',"%{$search}%"); 
+            // $query->orwhere('email','LIKE',"%{$search}%");  
+
+        }
+
+        return $query;
+    }
+
 
     
   

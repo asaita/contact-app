@@ -22,20 +22,10 @@ class ContactController extends Controller
             $query->onlyTrashed();
         }
         
-
-        //Aşağıdan SAYFALAMA yapmamızı sağlıyor. javascript ile gelen company idye göre
-        //veri çekiyoruz company tablosundan
-        //$contacts=Contact::orderBy('first_name','asc')->where(function($query){ ders 108 den dolayı burayı değiştirmek zorunda kaldık
-            $contacts=$query->sortByNameAlpha()->filterByCompany()->where(function ($query){
-
-            if($search=request('search')){
-                $query->where('first_name','LIKE',"%{$search}%");
-                $query->orwhere('last_name','LIKE',"%{$search}%"); 
-                $query->orwhere('email','LIKE',"%{$search}%");  
-
-            }
-
-        })->paginate(10);
+        $contacts=$query->allowedSorts('first_name')
+        ->allowedFilters('company_id')
+        ->allowedSearch(['first_name','last_name','email'])
+        ->paginate(10);
 
         //dump(DB::getQueryLog());
 

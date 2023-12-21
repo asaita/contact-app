@@ -27,9 +27,15 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Email</th>
+                    <th scope="col">
+                      {!! sortable("First Name","first_name") !!}
+                    </th>
+                    <th scope="col">
+                      {!! sortable("Last Name","last_name") !!}
+                    </th>
+                    <th scope="col">
+                      {!! sortable("Email","email") !!}
+                    </th>
                     <th scope="col">Company</th>
                     <th scope="col">Actions</th>
                   </tr>
@@ -63,7 +69,7 @@
                         <th scope="row">{{$index+$contacts->firstItem() }}</th>
                         <!-- mesela 100 kayıt olsaydı 10 lu sayfalamadan 
                           ilk sayfada 1 2.sayfada 11 3.sayfada 22 olacaktı firsitem değeri -->
-                        <td>{{$contacts->firstItem()}}</td>
+                        {{-- <td>{{$contacts->firstItem()}}</td> --}}
                         <td>{{$contact->first_name}}</td>
                         <td>{{$contact->last_name}}</td>
                         <td>{{$contact->email}}</td>

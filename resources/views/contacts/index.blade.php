@@ -17,12 +17,12 @@
                     @endif
                   </h2>
                   <div class="ml-auto">
-                    <a href="{{route('contact.create')}}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add New</a>
+                    <a href="{{route('contacts.create')}}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add New</a>
                   </div>
                 </div>
               </div>
             <div class="card-body">
-              @include('contact._filter')
+              @include('contacts._filter')
               <table class="table table-striped table-hover">
                 <thead>
                   <tr>
@@ -93,8 +93,8 @@
                               
                           @else
                               
-                            <a href="{{route('contact.show', $contact->id)}}" class="btn btn-sm btn-circle btn-outline-info" title="Show"><i class="fa fa-eye"></i></a>
-                            <a href="{{route('contact.edit',$contact->id)}}" class="btn btn-sm btn-circle btn-outline-secondary" title="Edit"><i class="fa fa-edit"></i></a>
+                            <a href="{{route('contacts.show', $contact->id)}}" class="btn btn-sm btn-circle btn-outline-info" title="Show"><i class="fa fa-eye"></i></a>
+                            <a href="{{route('contacts.edit',$contact->id)}}" class="btn btn-sm btn-circle btn-outline-secondary" title="Edit"><i class="fa fa-edit"></i></a>
                             <form id="form-delete" action="{{route('contacts.destroy',$contact->id)}}" method="POST" style="display: inline">  
                               @csrf
                               @method('delete')

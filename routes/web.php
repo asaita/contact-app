@@ -25,20 +25,21 @@ Route::get('/', function () {
 //Route::resource('/contacts', ContactController::class); bu şekilde yapınca aşağıdaki 
 //7 taneyi derlemiş toplamış oluyoruz ama bende çakışmadı çok uğraşmadım
 
-Route::get('/contacts',[ContactController::class,'index'])->name('contact.index');
+Route::get('/contacts',[ContactController::class,'index'])->name('contacts.index');
 
 Route::delete('/contacts/{contact}/restore',[ContactController::class,'restore'])->name('contacts.restore');
 Route::delete('/contacts/{contact}/force-delete',[ContactController::class,'forceDelete'])->name('contacts.forceDelete');
 
+Route::resource('/contacts', ContactController::class);
 
-Route::get('/contacts/create',[ContactController::class,'create'])->name('contact.create');
+// Route::get('/contacts/create',[ContactController::class,'create'])->name('contacts.create');
 
-Route::post('/contacts/store',[ContactController::class,'store'])->name('contact.store');
+// Route::post('/contacts/store',[ContactController::class,'store'])->name('contacts.store');
 
-Route::get('/contacts/{id}/edit',[ContactController::class,'edit'])->name('contact.edit');
+// Route::get('/contacts/{id}/edit',[ContactController::class,'edit'])->name('contacts.edit');
 
-Route::put('/contacts/{id}', [ContactController::class,'update'])->name('contact.update');
+// Route::put('/contacts/{id}', [ContactController::class,'update'])->name('contacts.update');
 
-Route::delete('/contacts/{id}', [ContactController::class,'destroy'])->name('contacts.destroy');
+// Route::delete('/contacts/{id}', [ContactController::class,'destroy'])->name('contacts.destroy');
 
-Route::get('/contacts/{id}', [ContactController::class,'show'])->name('contact.show');
+// Route::get('/contacts/{id}', [ContactController::class,'show'])->name('contacts.show');

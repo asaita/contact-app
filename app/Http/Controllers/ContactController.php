@@ -24,21 +24,22 @@ class ContactController extends Controller
 
         //dump(DB::getQueryLog());
 
-        return view('contact.index',Compact('contacts','companies'));
+        return view('contacts.index',Compact('contacts','companies'));
     }
 
     public function create(){
 
         $contact = new Contact();
         $companies=Company::orderby('name')->pluck('name','id')->prepend('All Companies','');
-        return view('contact.create',compact('companies','contact'));
+        return view('contacts.create',compact('companies','contact'));
     }
 
-    public function edit($id)
+    public function edit(Contact $contact)
     {
-        $contact=Contact::findOrFail($id); 
+        //$contact=Contact::findOrFail($id); fonksiyonun içine id yerine Contact $contact yazdık ders 121
+
         $companies=Company::orderby('name')->pluck('name','id')->prepend('All Companies','');
-        return view('contact.edit',compact('companies','contact'));
+        return view('contacts.edit',compact('companies','contact'));
     }
 
     public function store(Request $request){
@@ -61,7 +62,7 @@ class ContactController extends Controller
         //formdaki verileri veritabanına ekledi bu verileri form idye göre alıyor
         Contact::create($request->all());
 
-        return redirect()->route('contact.index')->with('message',"Contact hasbeen added succesfully");
+        return redirect()->route('contacts.index')->with('message',"Contact hasbeen added succesfully");
         
     }
 
@@ -81,21 +82,21 @@ class ContactController extends Controller
         $contact=Contact::findOrFail($id);
         $contact->update($request->all());
 
-        return redirect()->route('contact.index')->with('message',"Contact hasbeen updated succesfully");
+        return redirect()->route('contacts.index')->with('message',"Contact hasbeen updated succesfully");
     }
 
-    public function show($id){
-        $contacts=Contact::findOrFail($id);
+    public function show(Contact $contact){
+        //$contacts=Contact::findOrFail($id);
        
-       return view('contact.show',Compact('contacts'));
+       return view('contacts.show',Compact('contacts'));
     }
 
-    public function destroy($id){
+    public function destroy(Contact $contact){
        
-        $contact=Contact::findOrFail($id);
+        //$contact=Contact::findOrFail($id);
         $contact->delete();
 
-        return redirect()->route('contact.index')
+        return redirect()->route('contacts.index')
         ->with('message',"Contact has been moved to trash")
         ->with('undoRoute',$this->getUndoRoute('contacts.restore',$contact));
         

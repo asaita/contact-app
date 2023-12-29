@@ -10,12 +10,13 @@
         <div class="col-md-8">
           <div class="card">
             <div class="card-header card-title">
-              <strong>Add New Contact</strong>
+              <strong>Edit Contact</strong>
             </div>           
             <div class="card-body">
-              <FORM action="{{route('contact.store')}}" method="POST">
+              <FORM action="{{route('contacts.update',$contact->id)}}" method="POST">
+                @method('PUT')
                 @csrf
-                @include('contact._form')
+                @include('contacts._form')
 
               </FORM>
             

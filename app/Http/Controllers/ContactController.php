@@ -103,9 +103,10 @@ class ContactController extends Controller
 
     }
 
-    public function restore($id){
+    public function restore(Contact $contact){
        
-        $contact=Contact::onlyTrashed()->findOrFail($id);
+        //implicint binding yaptığımız için kaldırdık ders 122
+        //$contact=Contact::onlyTrashed()->findOrFail($id);
         $contact->restore();
         $redirect=request()->query('redirect');
 
@@ -122,9 +123,10 @@ class ContactController extends Controller
 
     }
 
-    public function forceDelete($id){
+    public function forceDelete(Contact $contact){
        
-        $contact=Contact::onlyTrashed()->findOrFail($id);
+        //implicint binding yaptığımız için kaldırdık ders 122
+        //$contact=Contact::onlyTrashed()->findOrFail($id);
         $contact->forceDelete();
 
         return back()

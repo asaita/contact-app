@@ -27,8 +27,12 @@ Route::get('/', function () {
 
 Route::get('/contacts',[ContactController::class,'index'])->name('contacts.index');
 
-Route::delete('/contacts/{contact}/restore',[ContactController::class,'restore'])->name('contacts.restore');
-Route::delete('/contacts/{contact}/force-delete',[ContactController::class,'forceDelete'])->name('contacts.forceDelete');
+Route::delete('/contacts/{contact}/restore',[ContactController::class,'restore'])
+    ->name('contacts.restore')
+    ->withTrashed();
+Route::delete('/contacts/{contact}/force-delete',[ContactController::class,'forceDelete'])
+    ->name('contacts.forceDelete')
+    ->withTrashed();
 
 Route::resource('/contacts', ContactController::class);
 

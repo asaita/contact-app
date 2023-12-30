@@ -23,9 +23,9 @@
     <body class="antialiased">
         
     <div class="ml-12">
-            <a href="{{route('contact.index')}}">All contacts</a>
-            <a href="{{route('contact.create')}}">Add contacts</a>
-            <a href="{{route('contact.show',1)}}">Show contacts</a>
+            <a href="{{route('contacts.index')}}">All contacts</a>
+            <a href="{{route('contacts.create')}}">Add contacts</a>
+            <a href="{{route('contacts.show',1)}}">Show contacts</a>
         </div>
 
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">

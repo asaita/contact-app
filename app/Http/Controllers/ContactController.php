@@ -5,6 +5,7 @@ use App\Models\Company;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\ContactRequest;
 
 class ContactController extends Controller
 {
@@ -42,17 +43,9 @@ class ContactController extends Controller
         return view('contacts.edit',compact('companies','contact'));
     }
 
-    public function store(Request $request){
+    public function store(ContactRequest $request){
 
-        //validate laravel fonksiyonu hangi alanda hangi doğrulamarı yapmamız gerektiğini belirtiyoruz
-        $request->validate([
-            'first_name'=>'required',
-            'last_name'=>'required',
-            'phone'=>'required',
-            'email'=>'required|email',
-            'address'=>'required',
-            'company_id'=>'required|exists:companies,id'
-        ]);
+        //validate ContactRequest Sınıfı ile yaptık
         
         // dd($request->all());
         //dd($request->only('first_name','last_name'));
@@ -62,21 +55,14 @@ class ContactController extends Controller
         //formdaki verileri veritabanına ekledi bu verileri form idye göre alıyor
         Contact::create($request->all());
 
-        return redirect()->route('contacts.index')->with('message',"Contact hasbeen added succesfully");
+        return redirect()->route('contacts.index')->with('message',"Contact has been added succesfully");
         
     }
 
-    public function update($id, Request $request){
+    public function update($id, ContactRequest $request){
 
         
-        $request->validate([
-            'first_name'=>'required',
-            'last_name'=>'required',
-            'phone'=>'required',
-            'email'=>'required|email',
-            'address'=>'required',
-            'company_id'=>'required|exists:companies,id'
-        ]);
+       
         
         
         $contact=Contact::findOrFail($id);
